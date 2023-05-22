@@ -1,7 +1,6 @@
 import streamlit as st
 import re
 from io import StringIO
-import logger
 
 pattern_logdata = re.compile(r"\[([a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12})\]\s+(.*?)\n")
 
@@ -48,8 +47,6 @@ class FileUploader:
 
         model_col.metric(label="Model", value= model_version)
         total_col.metric(label="Total Count", value= len(results))
-
-        logger.app_logger.info(f"Result:{results.values()}")
         
         resume_count = len([x for x in results.values() if x.get_doc_type() == "'resume'" ])
         resume_col.metric(label="Resume Count", value= resume_count)
