@@ -5,10 +5,10 @@ from io import StringIO
 pattern_logdata = re.compile(r"\[([a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12})\]\s+(.*?)\n")
 
 # Result for document 'Andy_Test/Engine V2/Test classification v2 engine/Dev security.docx' : {'doc_type': 'legal_contract', 'confidence': 0.5}
-pattern_result = re.compile(r"Result for document '(.*?)' : {'doc_type': (.*?)(?:, 'confidence': (.*?))?}")
+pattern_result = re.compile(r"\[([a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12})\] Result for document '(.*?)' : {'doc_type': (.*?)(?:, 'confidence': (.*?))?}")
 
 # Time taken for 'processing Andy_Test/Engine V2/Test classification v2 engine/Dev security.docx using lib-document-type-detector v0.3.2' : 66.698 ms
-pattern_time = re.compile(r"processing (.*?) using lib-document-type-detector (.*?)' : (.*?) ms")
+pattern_time = re.compile(r"\[([a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12})\] Time taken for 'processing (.*?) using lib-document-type-detector (.*?)' : (.*?) ms")
 
 class FileData:
     file_name: str = ''
@@ -68,10 +68,10 @@ class FileUploader:
 
         for match in matches_result:
             file_data = FileData(); 
-            file_data.file_name, file_data.doc_type, file_data.confidence = match 
+            file_data.file_name, _, file_data.doc_type, file_data.confidence = match 
             text_data[file_data.file_name] = file_data 
         model_version = ''
         for match in matches_time:
-            file_name, model_version, _  = match 
+            file_name, _, model_version, _  = match 
             file_data = text_data.get(file_name) 
         return text_data, model_version
